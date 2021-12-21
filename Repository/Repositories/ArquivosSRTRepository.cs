@@ -1,6 +1,7 @@
 ﻿using Domain.Entidades;
 using Repository.DTO.ArquivoSRT;
 using Repository.Repositories.Interfaces;
+using Shared.Extentions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,20 +11,13 @@ namespace Repository.Repositories
 {
     public class ArquivosSRTRepository : IArquivosSRTRepository
     {
-        private readonly string _raiz = Path.GetTempFileName();
-        private string _diretorioOriginal;
-        private string _diretorioDeslocada;
+        private string _diretorioOriginal = Path.Combine(Directory.GetCurrentDirectory().Replace(@"\Testes\bin\Debug\netcoreapp3.1", ""), @"Arquivos\Legendas\Original");
+        private string _diretorioDeslocada = Path.Combine(Directory.GetCurrentDirectory().Replace(@"\Testes\bin\Debug\netcoreapp3.1", ""), @"Arquivos\Legendas\Deslocada");
         private string _fileName;
         public ArquivosSRTRepository()
         {
-            _diretorioOriginal = Path.Combine(Directory.GetCurrentDirectory().Replace(@"\bin\Debug\netcoreapp3.1", ""), @"Arquivos\Legendas\Original");
-            _diretorioDeslocada = Path.Combine(Directory.GetCurrentDirectory().Replace(@"\bin\Debug\netcoreapp3.1", ""), @"Arquivos\Legendas\Deslocada");
-
-            if (!Directory.Exists(_diretorioOriginal))
-                Directory.CreateDirectory(_diretorioOriginal);
-
-            if (!Directory.Exists(_diretorioDeslocada))
-                Directory.CreateDirectory(_diretorioDeslocada);
+            _diretorioOriginal.CriarDiretorio();
+            _diretorioDeslocada.CriarDiretorio();
         }
 
         public ArquivoSRT DeslocarTimerCode(int id, DeslocamentoTimerCodeDTO deslocamentoDto)
@@ -39,15 +33,6 @@ namespace Repository.Repositories
 
         public List<ArquivoSRTDTO> ListarTodosArquivosSRT()
         {
-            string _diretorioOriginal = Path.Combine(Directory.GetCurrentDirectory().Replace(@"\bin\Debug\netcoreapp3.1", ""), @"Arquivos\Legendas\Original");
-            string _diretorioDeslocada = Path.Combine(Directory.GetCurrentDirectory().Replace(@"\bin\Debug\netcoreapp3.1", ""), @"Arquivos\Legendas\Deslocada");
-
-            if (!Directory.Exists(_diretorioOriginal))
-                Directory.CreateDirectory(_diretorioOriginal);
-
-            if (!Directory.Exists(_diretorioDeslocada))
-                Directory.CreateDirectory(_diretorioDeslocada);
-
             var arquivos = Directory.GetFiles(_diretorioOriginal);
 
             List<ArquivoSRTDTO> arquivosDTO = new List<ArquivoSRTDTO>();

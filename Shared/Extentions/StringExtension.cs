@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Shared.Extentions
 {
@@ -28,5 +29,12 @@ namespace Shared.Extentions
         public static bool IsNullOrEmpty(this string value) => string.IsNullOrEmpty(value);
         public static bool IsNotNullOrEmpty(this string value) => !string.IsNullOrEmpty(value);
 
+        public static bool CriarDiretorio(this string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            return Directory.Exists(path);
+        }
     }
 }
